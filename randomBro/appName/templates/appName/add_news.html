@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Добавление новости
+{% endblock %}
+
+
+{% block content %}
+<h1>Добавление новости</h1>
+<form action="{% url 'add_news' %}" method="post">
+    {% csrf_token %}
+
+    <!--  ------------------------------------------------------  -->
+
+    {{ form.as_p }}
+
+<!-- --------------------------------------------------------   -->
+    <!--      а ваще ето автоматический рендеринг форм-->
+    <!--  .as_p, .as_ul, .as_t варианды заключения полей формы по умолчанию -->
+
+    {{ form.non_field.errors }}
+    {% comment %}
+    <div class="form-group">
+        <label for="{{ form.title.id_for_lable }}">Заголовок:</label>
+        {{ form.title }}
+        <!-- короче хуета сверху это тег инпут типо, чтобы присвоить ему класс нужно в forms.py добавить атрибут widget  -->
+        <div class="invalid-feedback">
+            {{ form.title.errors }}
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="{{ form.content.id_for_lable }}">Текст:</label>
+        {{ form.content }}
+        <div class="invalid-feedback">
+            {{ form.content.errors }}
+        </div>
+
+    </div>
+    <div class="form-group">
+        <label for="{{ form.is_published.id_for_lable }}">Опубликовать?</label>
+        {{ form.is_published }}
+        <div class="invalid-feedback">
+            {{ form.is_published.errors }}
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="{{ form.category.id_for_lable }}">Категория:</label>
+        {{ form.category }}
+        <div class="invalid-feedback">
+            {{ form.category.errors }}
+        </div>
+    </div>
+    {% endcomment %}
+
+<!--  отделены 3 варианта, они все одианаковые -->
+<!--  ------------------------------------------------------  -->
+
+    {% comment %}
+    {% for field in form %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            <div class="invalid-feedback">
+            {{ field.errors }}
+            </div>
+        </div>
+    {% endfor %}
+    {% endcomment %}
+
+<!--  ------------------------------------------------  -->
+
+    <button type="submit" class="btn btn-primary btn-block"> Добавить новость</button>
+</form>
+{% endblock %}
