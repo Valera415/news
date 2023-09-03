@@ -1,6 +1,7 @@
 from django import forms
 from .models import Category, News
-
+import re
+from django.core.exceptions import ValidationError
 
 # class NewsForm(forms.Form):
     # lable - заголовок, required - обязательный ли пункт в форме, initial - начальное значение
@@ -31,3 +32,17 @@ class NewsForm(forms.ModelForm):
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
             'category': forms.Select(attrs={'class': 'form-control'})
         }
+
+    # кастомный валидатор
+    def clean_title(self):
+        title = self.cleaned_data['title']
+        if re.match(r'\d', title):
+            raise ValidationError('Название не должно начинаться с цифры')
+        return title
+
+    # def clean_is_published(self):
+    #     is_published = self.cleaned_data['is_published']
+    #     if not is_published:
+    #         raise ValidationError('Ебло галку нажми')
+    #     return is_published
+    #
