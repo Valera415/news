@@ -29,8 +29,11 @@ def add_news(request):
         form = NewsForm(request.POST)
         if form.is_valid():
             # print(form.cleaned_data)
-            news = News.objects.create(**form.cleaned_data)
+            # news = News.objects.create(**form.cleaned_data)
+            # штуку сверху применяем для несвязанных с бд форм
             # распаковали словарь (**) и добавили в бдху данные из формы (form.cleaned_data)
+            news = form.save()
+            # сохраняем епта
             return redirect(news)
     #     redirect перенаправляет нас,
     else:
