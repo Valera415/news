@@ -26,14 +26,16 @@ class HomeNews(ListView):
 #     переопределяем метод получаения данных из бд
 
 
+class NewsByCategory(ListView):
+    model = News
 
 
 
 
-def index(request):
-    news = News.objects.order_by('-created_at')
-    context = {'news': news, 'title': 'Новости'} #переменные в шаблон
-    return render(request, 'appName/index.html', context=context)
+# def index(request):
+#     news = News.objects.order_by('-created_at')
+#     context = {'news': news, 'title': 'Новости'} #переменные в шаблон
+#     return render(request, 'appName/index.html', context=context)
 
 
 def get_category(request, category_id):
