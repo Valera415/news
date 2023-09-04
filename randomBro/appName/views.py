@@ -1,6 +1,33 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import News, Category
 from .forms import NewsForm
+from django.views.generic import ListView
+
+
+class HomeNews(ListView):
+    model = News
+    template_name = 'appName/home_news_list.html'
+#     переопределение базового шаблона, по дефолту ищется news_list (название модели_лист)
+
+    context_object_name = 'news'
+#     чтобы работать не с дефолтным объектом object_list
+
+#     extra_context = {'title': 'Главная'}
+#     доп данные, не рекомендуется использовать для динамических данных
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        # обращаемся к родителю и записываем контекст, чтобы добавить в него свою переменную с данными
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Новости'
+        return context
+
+    def get_queryset(self):
+        return News.objects.filter(is_published=True).order_by('-pk')
+#     переопределяем метод получаения данных из бд
+
+
+
+
 
 
 def index(request):

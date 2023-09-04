@@ -4,7 +4,8 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('', index, name='home_page'),     #нейм - переменная для шаблонизатора, желательно указывать
+    # path('', index, name='home_page'),     #нейм - переменная для шаблонизатора, желательно указывать
+    path('', HomeNews.as_view(), name='home_page'),
     path('category/<int:category_id>/', get_category, name='category_page'), #можно менять путь
     path('news/<int:news_id>/', get_news, name='news_page'),
     path('add-news/', add_news, name='add_news')
