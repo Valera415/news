@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    {{ news.title }}
+{{ news.title }}
 {% endblock %}
 
 
@@ -14,20 +14,14 @@
         Категория: {{ news.news_category }}
     </div>
     <div class="card-body">
-        <div class="media">
-            <div class="media-body">
-                <h5 class="card-title">{{ news.title }}</h5>
-                <p class="card-text">{{ news.content|linebreaks}}</p>
-            </div>
-            {% if news.photo%}
-            <img src="{{ news.photo.url }}" alt="" width="350" class="mr-3">
-            {% endif %}
-        </div>
+        {% if news.photo%}
+        <img src="{{ news.photo.url }}" alt="" width="350" class="float-left mr-3">
+        {% endif %}
+        <h5 class="card-title">{{ news.title }}</h5>
+        <p class="card-text">{{ news.content|linebreaks}}</p>
     </div>
     <div class="card-footer text-muted">
         {{ news.created_at|timesince}}
     </div>
-
-
 </div>
 {% endblock %}

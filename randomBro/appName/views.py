@@ -18,7 +18,7 @@ class HomeNews(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         # обращаемся к родителю и записываем контекст, чтобы добавить в него свою переменную с данными
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Новости'
+        context['title'] = 'Главная'
         return context
 
     def get_queryset(self):
@@ -28,6 +28,18 @@ class HomeNews(ListView):
 
 class NewsByCategory(ListView):
     model = News
+    template_name = 'appName/home_news_list.html'
+    context_object_name = 'news'
+    allow_empty = False
+    # когда мы ищем новость, которой нет, мы ее не будем показывать, т.е. получил 404 ошибку, а не ошибку БД
+
+    def get_queryset(self):
+        return News.objects.filter(news_category_id=self.kwargs['category_id'], is_published=True).order_by('-pk')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = Category.objects.get(pk=self.kwargs['category_id'])
+        return context
 
 
 
