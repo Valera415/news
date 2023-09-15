@@ -66,6 +66,19 @@ class NewsByCategory(ListView):
 class ViewNews(DetailView):
     model = News
     template_name = 'appName/news.html'
+
+    def get(self, request, *args, **kwargs):
+        # Получите объект новости
+        news = self.get_object()
+
+        # Увеличьте значение views на 1
+        news.views += 1
+
+        # Сохраните объект новости обратно в базу данных
+        news.save()
+
+        return super().get(request, *args, **kwargs)
+
     # pk_url_kwarg = 'news_id'
 #     можно крч так сделать, а можно и согласно конвенциям джанго
 

@@ -15,8 +15,9 @@
 <div class="container mt-3">
     <div class="row">
         <div class="col-md-3">
-
-            {% include 'inc/_sidebar.html' %}
+            {% block sidebar %}
+                {% include 'inc/_sidebar.html' %}
+            {% endblock %}
 
         </div>
         <div class="col-md-9">

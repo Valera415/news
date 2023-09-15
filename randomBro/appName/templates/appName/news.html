@@ -11,7 +11,14 @@
 
 <div class="card mb-3">
     <div class="card-header">
-        Категория: {{ news.news_category }}
+        <div class="d-flex">
+            <div>
+                Категория: {{ news.news_category }}
+            </div>
+            <div class="ml-auto">
+                Просмотры: {{ news.views }}
+            </div>
+        </div>
     </div>
     <div class="card-body">
         {% if news.photo%}

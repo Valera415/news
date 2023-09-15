@@ -11,6 +11,7 @@ class News(models.Model):
     photo = models.ImageField(upload_to='photos/%Y/%m/', blank=True)
     is_published = models.BooleanField(default=True, verbose_name='Опубликовать?')
     news_category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Категория:') #внешний ключ
+    views = models.IntegerField(default=0)
 
     def get_absolute_url(self):
         return reverse('news_page', kwargs={'pk': self.pk})
@@ -18,10 +19,11 @@ class News(models.Model):
     def __str__(self):
         return self.title    #то что будет напсано в возвращаемом объекте
 
+    # описательный класс
     class Meta:     #подкласс для того чтобы изменить написание в админке лоол
         verbose_name = 'Новость'
         verbose_name_plural = 'Новости'
-        ordering = ['created_at', 'title']  #сортировка, работает везде, нетолько в админке
+        ordering = ['created_at', 'title']  #порядок сортировки, работает везде, нетолько в админке
 
 
 class Category(models.Model):
