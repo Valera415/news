@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import News, Category
 from .forms import NewsForm
 from django.views.generic import ListView, DetailView, CreateView
+from django.db.models import F
 
 
 class HomeNews(ListView):
@@ -22,7 +23,7 @@ class HomeNews(ListView):
         return context
 
     def get_queryset(self):
-        return News.objects.filter(is_published=True).order_by('-pk')
+        return News.objects.filter(is_published=True).order_by('-pk').select_related('news_category')
 #     переопределяем метод получаения данных из бд
 
 
@@ -34,7 +35,7 @@ class NewsByCategory(ListView):
     # когда мы ищем новость, которой нет, мы ее не будем показывать, т.е. получил 404 ошибку, а не ошибку БД
 
     def get_queryset(self):
-        return News.objects.filter(news_category_id=self.kwargs['category_id'], is_published=True).order_by('-pk')
+        return News.objects.filter(news_category_id=self.kwargs['category_id'], is_published=True).order_by('-pk').select_related('news_category')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -72,7 +73,7 @@ class ViewNews(DetailView):
         news = self.get_object()
 
         # Увеличьте значение views на 1
-        news.views += 1
+        news.views = F('views') + 1
 
         # Сохраните объект новости обратно в базу данных
         news.save()

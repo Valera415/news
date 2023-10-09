@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import path, include
 from .views import *
 
 urlpatterns = [
@@ -11,7 +11,8 @@ urlpatterns = [
     # path('news/<int:news_id>/', get_news, name='news_page'),
     path('news/<int:pk>/', ViewNews.as_view(), name='news_page'),
     # path('add-news/', add_news, name='add_news')
-    path('add-news/', CreateNews.as_view(), name='add_news')
+    path('add-news/', CreateNews.as_view(), name='add_news'),
+    path("debug/", include("debug_toolbar.urls")),
 
 ]
 
