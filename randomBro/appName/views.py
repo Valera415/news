@@ -3,6 +3,7 @@ from .models import News, Category
 from .forms import NewsForm
 from django.views.generic import ListView, DetailView, CreateView
 from django.db.models import F
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class HomeNews(ListView):
@@ -84,7 +85,8 @@ class ViewNews(DetailView):
 #     можно крч так сделать, а можно и согласно конвенциям джанго
 
 
-class CreateNews(CreateView):
+class CreateNews(LoginRequiredMixin, CreateView):
+    raise_exception = True
     form_class = NewsForm
     template_name = 'appName/add_news.html'
 #     почему после заполнения формы происходит редирект на новость?
