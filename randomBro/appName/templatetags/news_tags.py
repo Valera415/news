@@ -1,5 +1,5 @@
 from django import template
-from appName.models import Category
+from ..models import Category
 
 register = template.Library()
 

@@ -7,6 +7,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class HomeNews(ListView):
+    paginate_by = 2
+    # добавим пагинатор, разбивка по 10 элементов на страничке,
+    # в контекст все добавляется автоматически
+
     model = News
     template_name = 'appName/home_news_list.html'
 #     переопределение базового шаблона, по дефолту ищется news_list (название модели_лист)
@@ -21,6 +25,7 @@ class HomeNews(ListView):
         # обращаемся к родителю и записываем контекст, чтобы добавить в него свою переменную с данными
         context = super().get_context_data(**kwargs)
         context['title'] = 'Главная'
+
         return context
 
     def get_queryset(self):
@@ -29,11 +34,13 @@ class HomeNews(ListView):
 
 
 class NewsByCategory(ListView):
+    paginate_by = 2
     model = News
     template_name = 'appName/home_news_list.html'
     context_object_name = 'news'
     allow_empty = False
     # когда мы ищем новость, которой нет, мы ее не будем показывать, т.е. получил 404 ошибку, а не ошибку БД
+
 
     def get_queryset(self):
         return News.objects.filter(news_category_id=self.kwargs['category_id'], is_published=True).order_by('-pk').select_related('news_category')

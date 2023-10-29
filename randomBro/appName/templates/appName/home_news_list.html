@@ -5,11 +5,16 @@
 {% endblock %}
 
 
-
 {% block content %}
 {% for item in news %}
 
 {% include 'inc/_news_data.html'%}
 
 {% endfor %}
+
+{% if page_obj.has_other_pages%}
+{% include 'inc/_pagination.html'%}
+{% endif %}
+
 {% endblock %}
+
