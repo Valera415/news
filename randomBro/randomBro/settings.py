@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'appName.apps.AppnameConfig',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +140,12 @@ MEDIA_URL = '/media/'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+
+#настройка email
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'test.3228@yandex.ru'
+EMAIL_HOST_PASSWORD = 'rtxtwodhbyjpwizl'
+EMAIL_USE_SSL = True
+

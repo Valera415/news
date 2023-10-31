@@ -1,9 +1,66 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import News, Category
-from .forms import NewsForm
+from .forms import NewsForm, RegistationForm, LoginForm, ContactForm
+
 from django.views.generic import ListView, DetailView, CreateView
 from django.db.models import F
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from django.contrib.auth import login, logout
+from django.core.mail import send_mail
+
+
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            mail = send_mail(form.cleaned_data['subject'], form.cleaned_data['content'], 'test.3228@yandex.ru',
+                            ['yazenuk@gmail.com', ], fail_silently=True)
+            if mail:
+                messages.success(request, 'дурак!')
+                return redirect('contact')
+            else:
+                messages.error(request,'Тупица')
+        else:
+            messages.error(request, 'мудила!')
+    else:
+        form = ContactForm()
+    return render(request, 'appName/contact.html', context={'form': form})
+
+
+
+def register(request):
+    if request.method == 'POST':
+        form = RegistationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, 'Успешная регистрация')
+            return redirect('home_page')
+        else:
+            messages.error(request, 'Ошибка регистрации')
+    else:
+        form = RegistationForm()
+    return render(request, 'appName/contact.html', context={'form': form})
+
+
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home_page')
+    else:
+        form = LoginForm()
+
+    return render(request, 'appName/login.html', {'form': form})
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('home_page')
+
 
 
 class HomeNews(ListView):

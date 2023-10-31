@@ -13,6 +13,10 @@ urlpatterns = [
     # path('add-news/', add_news, name='add_news')
     path('add-news/', CreateNews.as_view(), name='add_news'),
     path("debug/", include("debug_toolbar.urls")),
+    path('register/', register, name='register'),
+    path('login/', user_login, name='login'),
+    path('logout/', user_logout, name='logout'),
+    path('contact/', contact, name='contact'),
 
 ]
 

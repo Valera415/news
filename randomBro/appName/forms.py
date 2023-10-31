@@ -2,6 +2,10 @@ from django import forms
 from .models import Category, News
 import re
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+from captcha.fields import CaptchaField
+
 
 # class NewsForm(forms.Form):
     # lable - заголовок, required - обязательный ли пункт в форме, initial - начальное значение
@@ -26,7 +30,7 @@ class NewsForm(forms.ModelForm):
         model = News
         # fields = '__all__'
 # все поля, но это не рекомендуемный вариант
-        fields = ['title', 'content', 'is_published', 'news_category']
+        fields = ('title', 'content', 'is_published', 'news_category')
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
@@ -46,3 +50,25 @@ class NewsForm(forms.ModelForm):
     #         raise ValidationError('Ебло галку нажми')
     #     return is_published
     #
+
+
+class RegistationForm(UserCreationForm):
+    username = forms.CharField(label='Имя пользователя', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(label='Подтверждение пароля', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+    email = forms.EmailField(label='E-mail', widget=forms.EmailInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(label='Имя пользователя', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+
+class ContactForm(forms.Form):
+    subject = forms.CharField(label='Тема', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    content = forms.CharField(label='Сообщение', widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
+    captcha = CaptchaField()
