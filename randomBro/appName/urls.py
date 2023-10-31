@@ -2,10 +2,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from .views import *
+from django.views.decorators.cache import cache_page
 
 urlpatterns = [
     # path('', index, name='home_page'),     #нейм - переменная для шаблонизатора, желательно указывать
-    path('', HomeNews.as_view(), name='home_page'),
+    path('', cache_page(60)(HomeNews.as_view()), name='home_page'),
     # path('category/<int:category_id>/', get_category, name='category_page'), #можно менять путь
     path('category/<int:category_id>/', NewsByCategory.as_view(), name='category_page'),
     # path('news/<int:news_id>/', get_news, name='news_page'),

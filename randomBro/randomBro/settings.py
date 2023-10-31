@@ -149,3 +149,10 @@ EMAIL_HOST_USER = 'test.3228@yandex.ru'
 EMAIL_HOST_PASSWORD = 'rtxtwodhbyjpwizl'
 EMAIL_USE_SSL = True
 
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": os.path.join(BASE_DIR, 'cache'),
+    }
+}
