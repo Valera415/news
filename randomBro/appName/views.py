@@ -1,7 +1,7 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from .models import News, Category
 from .forms import NewsForm, RegistationForm, LoginForm, ContactForm
 
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from django.db.models import F
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -36,12 +36,16 @@ def register(request):
             user = form.save()
             login(request, user)
             messages.success(request, 'Успешная регистрация')
-            return redirect('home_page')
+            return redirect('email_confirmation')
         else:
             messages.error(request, 'Ошибка регистрации')
     else:
         form = RegistationForm()
-    return render(request, 'appName/contact.html', context={'form': form})
+    return render(request, 'appName/register.html', context={'form': form})
+
+
+def email_confirmation(request):
+    return render(request, 'appName/email_confirmation.html')
 
 
 def user_login(request):
@@ -60,7 +64,6 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('home_page')
-
 
 
 class HomeNews(ListView):

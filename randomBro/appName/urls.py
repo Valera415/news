@@ -6,7 +6,7 @@ from django.views.decorators.cache import cache_page
 
 urlpatterns = [
     # path('', index, name='home_page'),     #нейм - переменная для шаблонизатора, желательно указывать
-    path('', cache_page(60)(HomeNews.as_view()), name='home_page'),
+    path('', HomeNews.as_view(), name='home_page'),
     # path('category/<int:category_id>/', get_category, name='category_page'), #можно менять путь
     path('category/<int:category_id>/', NewsByCategory.as_view(), name='category_page'),
     # path('news/<int:news_id>/', get_news, name='news_page'),
@@ -14,10 +14,11 @@ urlpatterns = [
     # path('add-news/', add_news, name='add_news')
     path('add-news/', CreateNews.as_view(), name='add_news'),
     path("debug/", include("debug_toolbar.urls")),
-    path('register/', register, name='register'),
+    path('registrarion/', register, name='register'),
     path('login/', user_login, name='login'),
     path('logout/', user_logout, name='logout'),
     path('contact/', contact, name='contact'),
+    path('registrarion/confirm/', email_confirmation, name='email_confirmation'),
 
 ]
 
