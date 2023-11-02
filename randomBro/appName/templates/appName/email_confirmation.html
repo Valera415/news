@@ -1,15 +1,6 @@
-{% extends 'base.html' %}
+Hi {{ user }},
 
-{% block title %}
-    Подтверждение
-{% endblock %}
+Please click on the link below to confirm your registration:
 
-{% block content %}
-<h2>Спасибо за регистрацию</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
 
-    <button type="submit" class="btn btn-primary btn-block">asddas</button>
-</form>
-{% endblock %}

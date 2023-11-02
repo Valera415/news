@@ -149,6 +149,10 @@ EMAIL_HOST_USER = 'test.3228@yandex.ru'
 EMAIL_HOST_PASSWORD = 'rtxtwodhbyjpwizl'
 EMAIL_USE_SSL = True
 
+DEFAULT_FROM_EMAIL = 'test.3228@yandex.ru'
+
+PASSWORD_RESET_TIMEOUT = 3600
+
 
 CACHES = {
     "default": {
