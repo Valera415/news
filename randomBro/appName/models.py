@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 
@@ -35,3 +36,17 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title   #   а называется эта хуета строковое представление объекта
+
+
+class Comment(models.Model):
+    author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    news = models.ForeignKey('News', on_delete=models.CASCADE)
+    text = models.TextField(max_length=500)
+    created_at = models.DateTimeField(auto_now_add=True)
+    rating = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.text
+
+    class Meta:
+        ordering = ['-created_at']

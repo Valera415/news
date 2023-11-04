@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import News, Category
+from .models import News, Category, Comment
 
 
 class NewsAdmin(admin.ModelAdmin):
@@ -16,6 +16,11 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display_links = ['title']
 
 
+# class CommentAdmin(admin.ModelAdmin):
+#     list_display = ['id', 'author', 'news']
+
 admin.site.register(News, NewsAdmin)  # чтобы в админке было мое приложение
 admin.site.register(Category)
+admin.site.register(Comment)
+
 # порядок в скобках выше важен!

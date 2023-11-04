@@ -1,14 +1,16 @@
-from .models import News, Category
-from .forms import NewsForm, RegistationForm, LoginForm, ContactForm
+from .models import News, Category, Comment
+from .forms import NewsForm, RegistationForm, LoginForm, ContactForm, CommentForm
 from .tokens import account_activation_token
 
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic.edit import FormMixin
 from django.db.models import F
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.contrib.auth import login, logout, get_user_model
 from django.core.mail import send_mail
+from django.http import HttpResponseRedirect
 
 
 from django.template.loader import render_to_string
@@ -16,7 +18,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
-
+from django.urls import reverse
 
 
 def contact(request):
@@ -175,9 +177,29 @@ class NewsByCategory(ListView):
 #     # чтобы при отсутствии pk получать не 5xx ошибку, а 404
 #     return render(request, 'appName/news.html', context={'news': news})
 
-class ViewNews(DetailView):
+class ViewNews(DetailView, FormMixin):
     model = News
     template_name = 'appName/news.html'
+    form_class = CommentForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.get_form()  # Добавьте форму в контекст
+        comments = Comment.objects.filter(news=self.object)
+        context['comments'] = comments
+        return context
+
+    def form_valid(self, form):
+        # Действия после успешной отправки формы
+        # return super().form_valid(form)
+        return redirect('news/<int:pk>/')
+
+    def form_invalid(self, form):
+        # Действия в случае недопустимых данных формы
+        return super().form_invalid(form)
+
+    def get_success_url(self):
+        return reverse('news_page', kwargs={'pk': self.object.pk})
 
     def get(self, request, *args, **kwargs):
         # Получите объект новости
@@ -191,8 +213,24 @@ class ViewNews(DetailView):
 
         return super().get(request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            comm = form.save(commit=False)
+            comm.author = request.user
+            comm.news = self.object
+            comm.save()
+            return HttpResponseRedirect(self.get_success_url())
+
+
+
     # pk_url_kwarg = 'news_id'
 #     можно крч так сделать, а можно и согласно конвенциям джанго
+
+
+
+
 
 
 class CreateNews(LoginRequiredMixin, CreateView):

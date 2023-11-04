@@ -10,25 +10,33 @@
 
 
 <div class="card mb-3">
-    <div class="card-header">
-        <div class="d-flex">
-            <div>
-                Категория: {{ news.news_category }}
-            </div>
-            <div class="ml-auto">
-                Просмотры: {{ news.views }}
-            </div>
-        </div>
+  <div class="card-header">
+    <div class="d-flex">
+      <div>
+        Категория: {{ news.news_category }}
+      </div>
+      <div class="ml-auto">
+        Просмотры: {{ news.views }}
+      </div>
     </div>
-    <div class="card-body">
-        {% if news.photo%}
-        <img src="{{ news.photo.url }}" alt="" width="350" class="float-left mr-3">
-        {% endif %}
-        <h5 class="card-title">{{ news.title }}</h5>
-        <p class="card-text">{{ news.content|linebreaks}}</p>
-    </div>
-    <div class="card-footer text-muted">
-        {{ news.created_at|timesince}}
-    </div>
+  </div>
+  <div class="card-body">
+    {% if news.photo%}
+    <img src="{{ news.photo.url }}" alt="" width="350" class="float-left mr-3">
+    {% endif %}
+    <h5 class="card-title">{{ news.title }}</h5>
+    <p class="card-text">{{ news.content|linebreaks}}</p>
+  </div>
+  <div class="card-footer text-muted">
+    {{ news.created_at|timesince }}
+  </div>
 </div>
+
+
+
+{% include 'inc/_comments.html' %}
+
+
+
+
 {% endblock %}
