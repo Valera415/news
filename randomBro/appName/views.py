@@ -112,7 +112,7 @@ def user_logout(request):
 
 
 class HomeNews(ListView):
-    paginate_by = 2
+    paginate_by = 3
     # добавим пагинатор, разбивка по 10 элементов на страничке,
     # в контекст все добавляется автоматически
 
@@ -134,7 +134,11 @@ class HomeNews(ListView):
         return context
 
     def get_queryset(self):
-        return News.objects.filter(is_published=True).order_by('-pk').select_related('news_category')
+        query = self.request.GET.get('data')
+        if query:
+            return News.objects.filter(title__icontains=query)
+        else:
+            return News.objects.filter(is_published=True).order_by('-pk').select_related('news_category')
 #     переопределяем метод получаения данных из бд
 
 

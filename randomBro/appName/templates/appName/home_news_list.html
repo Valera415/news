@@ -6,12 +6,17 @@
 
 
 {% block content %}
-{% for item in news %}
+{% include 'inc/_search.html' %}
+{% if news %}
 
-{% include 'inc/_news_data.html'%}
+    {% for item in news %}
 
-{% endfor %}
+    {% include 'inc/_news_data.html'%}
 
+    {% endfor %}
+{% else %}
+По вашему запросу ничего не найдено.
+{% endif %}
 {% if page_obj.has_other_pages%}
 {% include 'inc/_pagination.html' %}
 {% endif %}
